@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
+import { Header } from '../components/Header';
+
+export const Signin = () => {
+  const [formData, setFormData] = useState({});
+  const { loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(signInStart());
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+
+      dispatch(signInSuccess(data));
+      navigate('/admin-dashboard');
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
+  };
+
+  return (
+    <div className='min-h-screen w-full px-4 bg-slate-100 '>
+      <Header />
+
+      <div className="flex justify-center items-center pt-20 pb-10">
+        <div className="w-full max-w-md border border-gray-400 bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+          <h1 className='text-2xl sm:text-3xl text-center font-semibold mb-6'>Sign In</h1>
+
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+            <input
+              type='email'
+              placeholder='Email'
+              className='border p-3 rounded-md text-sm'
+              id='email'
+              onChange={handleChange}
+              required
+            />
+            <input
+              type='password'
+              placeholder='Password'
+              className='border p-3 rounded-md text-sm'
+              id='password'
+              onChange={handleChange}
+              required
+            />
+
+            <button
+              disabled={loading}
+              className='bg-slate-700 text-white p-3 rounded-md uppercase hover:opacity-95 disabled:opacity-70 transition-all duration-200'
+            >
+              {loading ? 'Loading...' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className='flex gap-1 mt-5 text-sm'>
+            <p>Don’t have an account?</p>
+            <Link to='/login'>
+              <span className='text-blue-700 font-medium hover:underline'>Sign Up</span>
+            </Link>
+          </div>
+
+          {error && <p className='text-red-500 mt-5 text-sm'>{error}</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
