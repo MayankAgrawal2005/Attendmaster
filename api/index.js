@@ -8,6 +8,7 @@ import studentsRouter from './routes/student.route.js';
 import classRouter from './routes/class.route.js';
 import subjectRouter from './routes/subject.route.js';
 import attendanceRouter from './routes/attendance.route.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ mongoose.connect(process.env.MONGO).then(()=>{
 }).catch((err)=>{
     console.log('Error connecting to MongoDB',err);
 })
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -47,6 +50,12 @@ app.use('/api/subject',subjectRouter);
 
 app.use('/api/attendance',attendanceRouter);
 
+
+app.use(express.static(path.join(__dirname,'/client/dist')));
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+})
 
 // middleware for checking errors
 app.use((err,req,res,next) =>{
