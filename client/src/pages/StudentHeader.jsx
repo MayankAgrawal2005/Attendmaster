@@ -1,8 +1,9 @@
 
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaCalendarDays, FaRegCalendarCheck, FaBars } from "react-icons/fa6";
+import { FaBars, FaCalendarDays, FaRegCalendarCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 export const StudentHeader = () => {
@@ -10,73 +11,94 @@ export const StudentHeader = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
   return (
     <>
-      {/* Hamburger button - visible only on small screens */}
-      <div className="lg:hidden fixed top-2 left-0 z-50">
-        <button onClick={toggleMenu} className="text-xl bg-white p-2 rounded shadow-md">
-          {menuOpen ? <IoClose /> : <FaBars />}
+      {/* 🔥 MOBILE BUTTON */}
+      <div className="lg:hidden fixed top-4 left-4 z-[100]">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="p-2 backdrop-blur-md rounded-lg bg-black/70 text-white"
+        >
+          {menuOpen ? <IoClose size={20} /> : <FaBars size={18} />}
         </button>
       </div>
 
-      {/* Sidebar */}
+      {/* 🔥 SIDEBAR */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white border border-gray-300 shadow-md z-40 transform transition-transform duration-300
-        ${menuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static sm:block`}
+        className={`fixed top-0 left-0 h-full w-64 z-[99]
+        bg-[#070b14] text-white border-r border-gray-800
+        transform transition-transform duration-300 
+        ${menuOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:translate-x-0`}
       >
-        <div className="flex flex-col justify-between items-center max-w-6xl mt-3 mx-auto p-3">
-          <Link to="/student-dashboard">
-            <h1 className="font-bold text-sm sm:text-xl flex flex-wrap gap-2">
-              <div className="flex gap-2">
-                <FaCalendarDays className="bg-white text-black mt-1 ml-12" />
-                <span className="text-[#64748B]">AttendMaster</span>
-              </div>
-            </h1>
-            <div className="bg-gray-400 mt-2 w-[250px] h-[1px]"></div>
-          </Link>
 
-          {/* Menu Items */}
-          <ul className="flex flex-col space-y-8 mt-10 gap-4">
+        {/* LOGO */}
+        <div className="p-5 border-b border-gray-800">
+          <Link to="/student-dashboard">
+            <div className="flex items-center gap-2">
+              <FaCalendarDays className="text-green-400 text-xl" />
+              <h1 className="text-lg font-bold ml-1">
+                Attend<span className="text-green-400">Master</span>
+              </h1>
+            </div>
+          </Link>
+        </div>
+
+        {/* MENU */}
+        <div className="p-4 flex flex-col justify-between h-[85%]">
+
+          <div className="space-y-4">
+
+            {/* ATTENDANCE */}
             <Link
               to="/student-attendance"
-              className={`flex gap-2 ${
-                location.pathname === '/student-attendance' ? 'text-blue-500' : 'text-gray-600'
+              onClick={() => setMenuOpen(false)}
+              className={`flex items-center gap-3 p-3 mt-14 rounded-lg transition
+              ${
+                location.pathname === '/student-attendance'
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}
             >
-              <FaRegCalendarCheck className="mt-1" />
+              <FaRegCalendarCheck />
               View Attendance
             </Link>
 
-            <Link to="/student-profile">
-              <div className="flex gap-4">
-                {currentUser && (
-                  <img
-                    className="rounded-full h-7 w-7 object-cover"
-                    src={currentUser.avatar}
-                    alt="profile"
-                  />
-                )}
-                <p
-                  className={`${
-                    location.pathname === '/student-profile' ? 'text-blue-500' : 'text-gray-600'
-                  }`}
-                >
-                  Profile
-                </p>
-              </div>
-            </Link>
-          </ul>
+          </div>
+
+          {/* PROFILE */}
+          <Link
+            to="/student-profile"
+            onClick={() => setMenuOpen(false)}
+            className={`flex items-center gap-3 p-3  rounded-lg transition
+            ${
+              location.pathname === '/student-profile'
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <img
+              src={currentUser?.avatar}
+              alt="profile"
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <div>
+              <p className="text-sm font-semibold">
+                {currentUser?.name || 'Student'}
+              </p>
+              <p className="text-xs text-gray-400">Student</p>
+            </div>
+          </Link>
+
         </div>
       </div>
 
-      {/* Backdrop when menu is open on small screens */}
+      {/* 🔥 BACKDROP */}
       {menuOpen && (
         <div
-          onClick={toggleMenu}
-          className="fixed inset-0 bg-black opacity-40 z-30 sm:hidden"
-        ></div>
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 backdrop-blur-md bg-black/50 z-[98] lg:hidden"
+        />
       )}
     </>
   );

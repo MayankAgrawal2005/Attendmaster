@@ -5,8 +5,11 @@ import { store } from './redux/store.js';
 import {persistor} from './redux/store.js';
 import {Provider} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-
+import './styles/globle.css';
 import './index.css'
+
+// main.jsx or index.js
+
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

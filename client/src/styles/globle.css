@@ -1,0 +1,52 @@
+/* GOOGLE FONTS */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@700;800&display=swap');
+
+/* ANIMATIONS */
+    @keyframes fadeUp {
+           from { opacity: 0; transform: translateY(36px); }
+         to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatOrb {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50%       { transform: translateY(-28px) scale(1.06); }         }
+        @keyframes spinSlow {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-ring {
+          0%   { transform: scale(0.8); opacity: 0.8; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+        @keyframes gradientShift {
+       0%, 100% { background-position: 0% 50%; }
+       50%       { background-position: 100% 50%; }
+     }
+     @keyframes shimmer {
+       from { background-position: -200% center; }
+       to   { background-position:  200% center; }
+     }
+     @keyframes ticker {
+       from { transform: translateX(0); }
+       to   { transform: translateX(-50%); }
+     }
+     .hero-title {
+       font-family: 'Syne', sans-serif;
+       font-weight: 800;
+     }
+     .shimmer-text {
+       background: linear-gradient(90deg, #fff 0%, #a78bfa 40%, #e879f9 60%, #fff 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+         -webkit-text-fill-color: transparent;
+         animation: shimmer 4s linear infinite;
+       }
+        .gradient-border {
+          background: linear-gradient(#070b14, #070b14) padding-box,
+                      linear-gradient(135deg, #7c3aed, #a855f7, #ec4899) border-box;
+         border: 1px solid transparent;
+        }
+        .orb { animation: floatOrb 7s ease-in-out infinite; }
+        .orb-2 { animation: floatOrb 9s ease-in-out infinite reverse; }
+        .spin-slow { animation: spinSlow 20s linear infinite; }
+        .ticker-wrap { overflow: hidden; white-space: nowrap; }
+         .ticker { display: inline-flex; animation: ticker 22s linear infinite; }
+     

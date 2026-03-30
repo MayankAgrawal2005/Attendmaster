@@ -28,9 +28,16 @@ app.use(cookieParser());
 
 
 
-app.listen(5000,()=>{
-    console.log('Server is running on PORT 5000');
-})
+// app.listen(5000,()=>{
+//     console.log('Server is running on PORT 5000');
+// })
+
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
+});
 
 // admin route
 app.use('/api/auth',authRouter);
@@ -67,3 +74,4 @@ app.use((err,req,res,next) =>{
         message,
     })
 })
+

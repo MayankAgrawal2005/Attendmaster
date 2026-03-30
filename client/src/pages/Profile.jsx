@@ -1,15 +1,232 @@
+// import React from 'react';
+// import { useState,useRef } from 'react';
+// import { Link } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { AdminHeader } from '../components/AdminHeader';
+
+// import { updateUserFailure,updateUserSuccess, updateUserStart,
+//     deleteUserFailure,deleteUserStart,deleteUserSuccess,
+//     signOutUserFailure ,signOutUserStart,signOutUserSuccess } from '../redux/user/userSlice';
+
+
+
+
+// export const Profile = () => {
+
+//     const {currentUser,loading,error}=useSelector((state)=>state.user);
+//     const [uploading, setUploading] = useState(false);
+//     const fileref = useRef(null);
+//     const [formData,setFormData] = useState({});
+//     const [avatarPreview, setAvatarPreview] = useState(currentUser?.avatar || "");
+//     const dispatch= useDispatch();
+//     console.log("currentUser is",currentUser);
+
+//     const handleChange = (e)=>{
+    
+//         setFormData({...formData,[e.target.id]:e.target.value});
+
+//     }
+
+//     const handleImageChange = async (e) => {
+//         const file = e.target.files[0];
+      
+//         if (file) {
+//           setUploading(true); 
+//           // Set up a FormData object to send to the Cloudinary API
+//           const formData = new FormData();
+//           formData.append('file', file);
+//           formData.append('upload_preset', 'mayank'); 
+//           formData.append("cloud_name", "diqum6tfd");
+      
+//           try {
+//             // Upload the image to Cloudinary
+//             const res = await fetch("https://api.cloudinary.com/v1_1/diqum6tfd/image/upload", {
+//               method: 'POST',
+//               body: formData,
+//             });
+      
+//             // Parse the JSON response
+//             const data = await res.json();
+      
+//             // Check if the secure_url is available in the response
+//             if (data.secure_url) {
+//               const imageUrl = data.secure_url;  // The URL of the uploaded image
+      
+//               // Update the formData with the image URL
+//               setFormData((prev) => ({
+//                 ...prev,
+//                 avatar: imageUrl,  // Save the Cloudinary URL
+//               }));
+      
+//               // Update the preview with the Cloudinary URL
+//               setAvatarPreview(imageUrl);
+//             } else {
+//               console.error("Cloudinary upload failed, secure_url is missing in the response");
+//             }
+//           } catch (error) {
+//             console.error("Error uploading image to Cloudinary:", error);
+//           }
+//           finally {
+//             setUploading(false); // Stop uploading state after request
+//         }
+//         }
+//       };
+
+
+//     const handleSubmit = async(e) =>{
+//         e.preventDefault();
+
+//         try{
+
+//             dispatch(updateUserStart());
+        
+            
+//             const res = await fetch(`/api/auth/update-user/${currentUser._id}`,{
+//             method:'POST',
+//               headers:{
+//                 'Content-Type':'application/json',
+//               },
+//               body:JSON.stringify(formData),
+        
+//             }) ;
+        
+//             const data = await res.json();
+//             if(data.success===false){
+//               dispatch(updateUserFailure(data.message));
+//               return;
+//             }
+        
+//              dispatch(updateUserSuccess(data));
+//              setUpdateSuccess(true);
+        
+//           }catch(error){
+//            dispatch(updateUserFailure(error.message));
+        
+//           }
+//  }
+
+//  const handleDelete = async()=>{
+
+//     try{
+ 
+//      dispatch(deleteUserStart());
+//      const res =  await fetch(`/api/auth/delete/${currentUser._id}`,{
+ 
+//         method:'DELETE',
+//   });
+ 
+//    const data = await res.json();
+//    if(data.success===false){
+//      dispatch(deleteUserFailure(data.message));
+//      return
+//    }
+ 
+ 
+//     dispatch(deleteUserSuccess(data));
+ 
+ 
+ 
+//     }catch(error){
+//      dispatch(deleteUserFailure(error.message));
+//     }
+ 
+//   }
+
+//   const  handleSignout = async() =>{
+
+//     try{
+//      dispatch(signOutUserStart());
+//       const res = await fetch('/api/auth/signout');
+ 
+//       const data = await res.json();
+//       if(data.success === false){
+//        dispatch(signOutUserFailure(data.message));
+//        return;
+//       }
+ 
+//       dispatch(signOutUserSuccess(data));
+ 
+//     }catch(error){
+//   dispatch(signOutUserFailure(data.message));
+//     }
+    
+//   }
+
+//   return (
+
+//     <div className='flex h-screen space-x-8'>
+
+//     <div>
+//     <AdminHeader className=' w-64 bg-slate-200 shadow-xl'/>
+//     </div>
+     
+//    <div className=' flex-1 min-h-screen border  border-gray-200 shadow-2xl  bg-white p-6 text-black'>
+
+   
+//     <div className='p-3 gap-3 max-w-lg mx-auto  '>
+     
+//       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
+
+//       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+//       <input type='file' ref={fileref} onChange={handleImageChange} hidden accept='image/*'/>
+
+
+
+//       <div className="relative w-24 h-24 mx-auto">
+//   {uploading ? (
+//     <div className="absolute inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 rounded-full">
+//       <span className="text-sm text-gray-700">Uploading...</span>
+//     </div>
+//   ) : (
+//     <img
+//       onClick={() => fileref.current.click()}
+//       src={avatarPreview}
+//       alt="profile"
+//       className="rounded-full h-24 w-24 object-cover mt-2 self-center cursor-pointer"
+//     />
+//   )}
+// </div>
+//     <input type='text' placeholder='username' defaultValue={currentUser.username}
+//     onChange={handleChange} id='username' className=' border p-3 rounded-lg '/>
+
+
+//     <input type='email' placeholder='email' id='email'  defaultValue={currentUser.email}
+//     onChange={handleChange}className=' border p-3 rounded-lg '/>
+
+
+//     <input type='password' placeholder='password' id='password'
+//      onChange={handleChange} className=' border p-3 rounded-lg '/>
+    
+//     <button disabled={loading} className='bg-slate-700 p-3 uppercase text-white hover:opacity-95 rounded-lg disabled:opacity-80'>{loading ? 'Updating...':'Update'}</button>
+
+     
+
+//       </form>
+
+//       <div className='flex justify-between mt-5'>
+//         <span  onClick={handleDelete} className='text-red-700 cursor-pointer'>Delete Account</span>
+//         <span onClick={handleSignout} className='text-red-700 cursor-pointer'>Sign-out</span>
+  
+//       </div>
+
+//     </div>
+
+// </div>
+//     </div>
+//   )
+
+
+// }
+
+
 import React from 'react';
 import { useState,useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminHeader } from '../components/AdminHeader';
 
 import { updateUserFailure,updateUserSuccess, updateUserStart,
     deleteUserFailure,deleteUserStart,deleteUserSuccess,
     signOutUserFailure ,signOutUserStart,signOutUserSuccess } from '../redux/user/userSlice';
-
-
-
 
 export const Profile = () => {
 
@@ -19,12 +236,9 @@ export const Profile = () => {
     const [formData,setFormData] = useState({});
     const [avatarPreview, setAvatarPreview] = useState(currentUser?.avatar || "");
     const dispatch= useDispatch();
-    console.log("currentUser is",currentUser);
 
     const handleChange = (e)=>{
-    
         setFormData({...formData,[e.target.id]:e.target.value});
-
     }
 
     const handleImageChange = async (e) => {
@@ -32,187 +246,340 @@ export const Profile = () => {
       
         if (file) {
           setUploading(true); 
-          // Set up a FormData object to send to the Cloudinary API
           const formData = new FormData();
           formData.append('file', file);
           formData.append('upload_preset', 'mayank'); 
           formData.append("cloud_name", "diqum6tfd");
       
           try {
-            // Upload the image to Cloudinary
             const res = await fetch("https://api.cloudinary.com/v1_1/diqum6tfd/image/upload", {
               method: 'POST',
               body: formData,
             });
       
-            // Parse the JSON response
             const data = await res.json();
       
-            // Check if the secure_url is available in the response
             if (data.secure_url) {
-              const imageUrl = data.secure_url;  // The URL of the uploaded image
+              const imageUrl = data.secure_url;
       
-              // Update the formData with the image URL
               setFormData((prev) => ({
                 ...prev,
-                avatar: imageUrl,  // Save the Cloudinary URL
+                avatar: imageUrl,
               }));
       
-              // Update the preview with the Cloudinary URL
               setAvatarPreview(imageUrl);
-            } else {
-              console.error("Cloudinary upload failed, secure_url is missing in the response");
             }
           } catch (error) {
-            console.error("Error uploading image to Cloudinary:", error);
+            console.error(error);
           }
           finally {
-            setUploading(false); // Stop uploading state after request
+            setUploading(false);
         }
         }
       };
-
 
     const handleSubmit = async(e) =>{
         e.preventDefault();
 
         try{
-
             dispatch(updateUserStart());
         
-            
             const res = await fetch(`/api/auth/update-user/${currentUser._id}`,{
-            method:'POST',
-              headers:{
-                'Content-Type':'application/json',
-              },
+              method:'POST',
+              headers:{ 'Content-Type':'application/json' },
               body:JSON.stringify(formData),
-        
-            }) ;
-        
+            });
+
             const data = await res.json();
             if(data.success===false){
               dispatch(updateUserFailure(data.message));
               return;
             }
-        
+
              dispatch(updateUserSuccess(data));
-             setUpdateSuccess(true);
-        
+
           }catch(error){
            dispatch(updateUserFailure(error.message));
-        
           }
  }
 
  const handleDelete = async()=>{
-
     try{
- 
      dispatch(deleteUserStart());
      const res =  await fetch(`/api/auth/delete/${currentUser._id}`,{
- 
         method:'DELETE',
-  });
- 
-   const data = await res.json();
-   if(data.success===false){
-     dispatch(deleteUserFailure(data.message));
-     return
-   }
- 
- 
-    dispatch(deleteUserSuccess(data));
- 
- 
- 
+     });
+
+     const data = await res.json();
+     if(data.success===false){
+       dispatch(deleteUserFailure(data.message));
+       return
+     }
+
+     dispatch(deleteUserSuccess(data));
+
     }catch(error){
      dispatch(deleteUserFailure(error.message));
     }
- 
-  }
+ }
 
   const  handleSignout = async() =>{
-
     try{
      dispatch(signOutUserStart());
       const res = await fetch('/api/auth/signout');
- 
       const data = await res.json();
       if(data.success === false){
        dispatch(signOutUserFailure(data.message));
        return;
       }
- 
       dispatch(signOutUserSuccess(data));
- 
     }catch(error){
-  dispatch(signOutUserFailure(data.message));
+      dispatch(signOutUserFailure(error.message));
     }
-    
   }
 
-  return (
+  // return (
 
-    <div className='flex h-screen space-x-8'>
+  //   <div className='flex min-h-screen bg-[#070b14] text-white'>
 
-    <div>
-    <AdminHeader className=' w-64 bg-slate-200 shadow-xl'/>
+  //     {/* SIDEBAR */}
+  //     <div>
+  //       <AdminHeader />
+  //     </div>
+
+  //     {/* MAIN */}
+  //     <div className='flex-1 flex justify-center items-center p-6'>
+
+  //       <div className='w-full max-w-lg p-8 rounded-3xl 
+  //       bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl'>
+
+  //         <h1 className='text-3xl font-bold text-center mb-6'>
+  //           Profile Settings
+  //         </h1>
+
+  //         <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
+
+  //           {/* FILE INPUT */}
+  //           <input 
+  //             type='file' 
+  //             ref={fileref} 
+  //             onChange={handleImageChange} 
+  //             hidden 
+  //             accept='image/*'
+  //           />
+
+  //           {/* AVATAR */}
+  //           <div className="relative w-28 h-28 mx-auto group">
+
+  //             {uploading ? (
+  //               <div className="absolute inset-0 flex items-center justify-center 
+  //               bg-black/50 rounded-full text-sm z-10">
+  //                 Uploading...
+  //               </div>
+  //             ) : (
+  //               <img
+  //                 onClick={() => fileref.current && fileref.current.click()}
+  //                 src={avatarPreview}
+  //                 alt="profile"
+  //                 className="w-28 h-28 rounded-full object-cover cursor-pointer 
+  //                 border border-white/20 transition duration-300 group-hover:scale-105 relative z-10"
+  //               />
+  //             )}
+
+  //             {/* GLOW FIXED */}
+  //             <div className="absolute inset-0 rounded-full 
+  //             bg-violet-500/20 blur-xl opacity-0 group-hover:opacity-100 
+  //             transition pointer-events-none"></div>
+
+  //           </div>
+
+  //           {/* INPUTS */}
+  //           <input 
+  //             type='text' 
+  //             defaultValue={currentUser.username}
+  //             onChange={handleChange} 
+  //             id='username'
+  //             className='p-3 rounded-xl bg-white/5 border border-white/10 
+  //             outline-none focus:ring-2 focus:ring-violet-500'
+  //           />
+
+  //           <input 
+  //             type='email' 
+  //             defaultValue={currentUser.email}
+  //             onChange={handleChange}
+  //             id='email'
+  //             className='p-3 rounded-xl bg-white/5 border border-white/10 
+  //             outline-none focus:ring-2 focus:ring-violet-500'
+  //           />
+
+  //           <input 
+  //             type='password' 
+  //             placeholder='password'
+  //             onChange={handleChange} 
+  //             id='password'
+  //             className='p-3 rounded-xl bg-white/5 border border-white/10 
+  //             outline-none focus:ring-2 focus:ring-violet-500'
+  //           />
+
+  //           {/* BUTTON */}
+  //           <button 
+  //             disabled={loading}
+  //             className='py-3 rounded-xl bg-gradient-to-r 
+  //             from-violet-600 to-pink-500 hover:scale-105 transition font-semibold'>
+  //             {loading ? 'Updating...' : 'Update'}
+  //           </button>
+
+  //         </form>
+
+  //         {/* ACTIONS */}
+  //         <div className='flex justify-between mt-6 text-sm'>
+
+  //           <span 
+  //             onClick={handleDelete} 
+  //             className='text-red-400 cursor-pointer hover:underline'>
+  //             Delete Account
+  //           </span>
+
+  //           <span 
+  //             onClick={handleSignout} 
+  //             className='text-red-400 cursor-pointer hover:underline'>
+  //             Sign-out
+  //           </span>
+
+  //         </div>
+
+  //       </div>
+
+  //     </div>
+
+  //   </div>
+  // )
+
+ return (
+  <div className="min-h-screen bg-gradient-to-br from-[#050816] via-[#0b1120] to-[#020617] text-white flex">
+
+    {/* Sidebar */}
+    <div >
+      <AdminHeader />
     </div>
-     
-   <div className=' flex-1 min-h-screen border  border-gray-200 shadow-2xl  bg-white p-6 text-black'>
 
-   
-    <div className='p-3 gap-3 max-w-lg mx-auto  '>
-     
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
+    {/* Main */}
+    <div className="flex-1 flex items-center justify-center p-6">
 
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-      <input type='file' ref={fileref} onChange={handleImageChange} hidden accept='image/*'/>
+      <div className="w-full max-w-xl bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 space-y-6">
 
+        {/* TOP TAG */}
+        <div className="flex justify-center">
+          <span className="px-4 py-1 text-xs tracking-widest rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">
+            • ADMIN ACCOUNT
+          </span>
+        </div>
 
+        {/* TITLE */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl shimmer-text hero-title sm:text-4xl profile-title">
+            My Profile
+          </h1>
+          <p className="label-text">
+            MANAGE SYSTEM ACCESS
+          </p>
+        </div>
 
-      <div className="relative w-24 h-24 mx-auto">
-  {uploading ? (
-    <div className="absolute inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 rounded-full">
-      <span className="text-sm text-gray-700">Uploading...</span>
-    </div>
-  ) : (
-    <img
-      onClick={() => fileref.current.click()}
-      src={avatarPreview}
-      alt="profile"
-      className="rounded-full h-24 w-24 object-cover mt-2 self-center cursor-pointer"
-    />
-  )}
-</div>
-    <input type='text' placeholder='username' defaultValue={currentUser.username}
-    onChange={handleChange} id='username' className=' border p-3 rounded-lg '/>
+        {/* AVATAR */}
+        <div className="flex justify-center">
+          <div className="relative w-28 h-28 group">
 
+            {uploading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full text-xs z-10">
+                Uploading...
+              </div>
+            )}
 
-    <input type='email' placeholder='email' id='email'  defaultValue={currentUser.email}
-    onChange={handleChange}className=' border p-3 rounded-lg '/>
+            <img
+              onClick={() => fileref.current.click()}
+              src={avatarPreview}
+              alt="profile"
+              className="w-28 h-28 rounded-full object-cover border-2 border-violet-400 cursor-pointer shadow-lg transition group-hover:scale-105"
+            />
 
+            {/* GLOW */}
+            <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-xl opacity-0 group-hover:opacity-100 transition"></div>
 
-    <input type='password' placeholder='password' id='password'
-     onChange={handleChange} className=' border p-3 rounded-lg '/>
-    
-    <button disabled={loading} className='bg-slate-700 p-3 uppercase text-white hover:opacity-95 rounded-lg disabled:opacity-80'>{loading ? 'Updating...':'Update'}</button>
+          </div>
+        </div>
 
-     
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-      </form>
+          <input type="file" ref={fileref} onChange={handleImageChange} hidden />
 
-      <div className='flex justify-between mt-5'>
-        <span  onClick={handleDelete} className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span onClick={handleSignout} className='text-red-700 cursor-pointer'>Sign-out</span>
-  
+          {/* USERNAME */}
+          <div>
+            <label className="label-text">USERNAME</label>
+            <input
+              type="text"
+              id="username"
+              defaultValue={currentUser.username}
+              onChange={handleChange}
+              className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-400"
+            />
+          </div>
+
+          {/* EMAIL */}
+          <div>
+            <label className="label-text">EMAIL</label>
+            <input
+              type="email"
+              id="email"
+              defaultValue={currentUser.email}
+              onChange={handleChange}
+              className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-400"
+            />
+          </div>
+
+          {/* PASSWORD */}
+          <div>
+            <label className="label-text">PASSWORD</label>
+            <input
+              type="password"
+              id="password"
+              onChange={handleChange}
+              className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-400"
+            />
+          </div>
+
+          {/* BUTTON */}
+          <button
+            disabled={loading}
+            className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 hover:opacity-90 transition font-medium tracking-widest"
+          >
+            {loading ? "UPDATING..." : "SAVE CHANGES"}
+          </button>
+
+        </form>
+
+        {/* FOOTER */}
+        <div className="flex justify-between text-sm pt-4 border-t border-white/10">
+
+          <span
+            onClick={handleDelete}
+            className="text-red-400 cursor-pointer hover:underline"
+          >
+            🗑 DELETE ACCOUNT
+          </span>
+
+          <span
+            onClick={handleSignout}
+            className="text-gray-400 cursor-pointer hover:underline"
+          >
+            ⎋ SIGN OUT
+          </span>
+
+        </div>
+
       </div>
 
     </div>
-
-</div>
-    </div>
-  )
+  </div>
+);
 }
-
