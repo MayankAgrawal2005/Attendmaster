@@ -1,0 +1,94 @@
+<svg width="512" height="512" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0f40"/>
+      <stop offset="100%" stop-color="#0a0c1a"/>
+    </radialGradient>
+    <radialGradient id="circleGrad" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#2d1f6e"/>
+      <stop offset="100%" stop-color="#0f0a2e"/>
+    </radialGradient>
+    <radialGradient id="capGrad" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </radialGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="sheetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#161230"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="680" height="680" fill="url(#bgGlow)" rx="60"/>
+
+  <g opacity="0.06" stroke="#a78bfa" stroke-width="0.5">
+    <line x1="170" y1="0" x2="170" y2="680"/>
+    <line x1="340" y1="0" x2="340" y2="680"/>
+    <line x1="510" y1="0" x2="510" y2="680"/>
+    <line x1="0" y1="170" x2="680" y2="170"/>
+    <line x1="0" y1="340" x2="680" y2="340"/>
+    <line x1="0" y1="510" x2="680" y2="510"/>
+  </g>
+
+  <circle cx="340" cy="340" r="290" fill="none" stroke="rgba(99,102,241,0.12)" stroke-width="1" stroke-dasharray="8 6"/>
+  <circle cx="340" cy="340" r="240" fill="rgba(99,102,241,0.07)"/>
+  <circle cx="340" cy="340" r="220" fill="url(#circleGrad)"/>
+  <circle cx="340" cy="340" r="220" fill="none" stroke="url(#ringGrad)" stroke-width="3"/>
+  <circle cx="340" cy="340" r="205" fill="none" stroke="rgba(139,92,246,0.2)" stroke-width="1"/>
+
+  <ellipse cx="342" cy="248" rx="130" ry="18" fill="rgba(0,0,0,0.3)"/>
+  <polygon points="340,168  470,228  340,288  210,228" fill="url(#capGrad)"/>
+  <polygon points="340,168  470,228  340,288  210,228" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <rect x="325" y="156" width="30" height="14" rx="4" fill="#818cf8"/>
+  <rect x="325" y="156" width="30" height="14" rx="4" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+  <path d="M470,228 Q490,228 490,248 L490,290" fill="none" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="490" y1="290" x2="484" y2="318" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+  <line x1="490" y1="290" x2="490" y2="320" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+  <line x1="490" y1="290" x2="496" y2="318" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="490" cy="290" r="5" fill="#a78bfa"/>
+
+  <polygon points="340,290  468,231  468,244  340,303  212,244  212,231" fill="rgba(67,56,202,0.6)"/>
+
+  <rect x="268" y="302" width="144" height="118" rx="10" fill="url(#sheetGrad)" stroke="#6366f1" stroke-width="2"/>
+  <rect x="308" y="292" width="64" height="20" rx="10" fill="#4f46e5" stroke="#818cf8" stroke-width="1.5"/>
+  <rect x="322" y="297" width="36" height="10" rx="5" fill="#818cf8"/>
+
+  <line x1="278" y1="328" x2="402" y2="328" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
+  <text x="291" y="323" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="rgba(167,139,250,0.6)" font-weight="600" letter-spacing="1">NAME</text>
+  <text x="358" y="323" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="rgba(167,139,250,0.6)" font-weight="600" letter-spacing="1">STATUS</text>
+
+  <rect x="278" y="335" width="74" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="371" cy="338" r="8" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.5)" stroke-width="1.2"/>
+  <polyline points="366,338 369,341 376,334" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="278" y="353" width="60" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="371" cy="356" r="8" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.5)" stroke-width="1.2"/>
+  <polyline points="366,356 369,359 376,352" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="278" y="371" width="80" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="371" cy="374" r="8" fill="rgba(248,113,113,0.12)" stroke="rgba(248,113,113,0.45)" stroke-width="1.2"/>
+  <line x1="366" y1="370" x2="376" y2="378" stroke="#f87171" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="376" y1="370" x2="366" y2="378" stroke="#f87171" stroke-width="1.8" stroke-linecap="round"/>
+
+  <rect x="278" y="389" width="66" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="371" cy="392" r="8" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.5)" stroke-width="1.2"/>
+  <polyline points="366,392 369,395 376,388" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="278" y="406" width="114" height="6" rx="3" fill="rgba(99,102,241,0.15)"/>
+  <rect x="278" y="406" width="80" height="6" rx="3" fill="rgba(99,102,241,0.45)"/>
+
+  <g fill="#818cf8" opacity="0.5">
+    <polygon points="140,140 146,140 143,134"/>
+    <polygon points="540,540 546,540 543,546"/>
+    <circle cx="152" cy="155" r="2"/>
+    <circle cx="528" cy="525" r="2"/>
+    <circle cx="530" cy="152" r="3"/>
+    <circle cx="150" cy="528" r="3"/>
+  </g>
+</svg>

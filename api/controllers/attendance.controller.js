@@ -26,6 +26,7 @@ try{
           attendanceByDate: [],
         });
       }
+      
 
      // check if there is a exists record
      
@@ -37,7 +38,10 @@ try{
      if (existingDateIndex !== -1) {
         // Update existing date's records
         attendanceDoc.attendanceByDate[existingDateIndex].records = records;
-      } else {
+      } 
+      
+  
+      else {
         // Push new date record
         attendanceDoc.attendanceByDate.push({
           date,
@@ -45,7 +49,9 @@ try{
         });
       }
 
-      await attendanceDoc.save();
+    
+
+   await attendanceDoc.save();
 
     res.status(200).json({
       message: "Attendance marked/updated successfully",

@@ -7,12 +7,15 @@ import {
   deleteUserFailure, deleteUserStart, deleteUserSuccess,
   signOutUserFailure, signOutUserStart, signOutUserSuccess
 } from '../redux/user/userSlice';
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { showError, showSuccess } from '../styles/toast';
 export const StudentProfile = () => {
   const [uploading, setUploading] = useState(false);
   const { currentUser, loading } = useSelector((state) => state.user);
   const fileref = useRef(null);
   const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  
   const [avatarPreview, setAvatarPreview] = useState(currentUser?.avatar || "");
   const dispatch = useDispatch();
 
@@ -42,6 +45,7 @@ export const StudentProfile = () => {
           console.error("Cloudinary upload failed");
         }
       } catch (error) {
+        showError("Error uploading image");
         console.error("Error uploading image:", error);
       } finally {
         setUploading(false);
@@ -51,6 +55,8 @@ export const StudentProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    
     try {
       dispatch(updateUserStart());
       const res = await fetch(`/api/auth/update-student/${currentUser._id}`, {
@@ -60,11 +66,14 @@ export const StudentProfile = () => {
       });
       const data = await res.json();
       if (data.success === false) {
+        showError(data.message);
         dispatch(updateUserFailure(data.message));
         return;
       }
+      showError("Profile updated successfully");
       dispatch(updateUserSuccess(data));
     } catch (error) {
+      showError("Failed to update profile");
       dispatch(updateUserFailure(error.message));
     }
   };
@@ -77,11 +86,14 @@ export const StudentProfile = () => {
       });
       const data = await res.json();
       if (data.success === false) {
+        showError(data.message);
         dispatch(deleteUserFailure(data.message));
         return;
       }
+      showSuccess("Account deleted successfully");
       dispatch(deleteUserSuccess(data));
     } catch (error) {
+      showError("Failed to delete account");
       dispatch(deleteUserFailure(error.message));
     }
   };
@@ -92,146 +104,20 @@ export const StudentProfile = () => {
       const res = await fetch('/api/auth/signout-student');
       const data = await res.json();
       if (data.success === false) {
+        showError(data.message);
         dispatch(signOutUserFailure(data.message));
         return;
       }
+      showSuccess("Signed out successfully");
       dispatch(signOutUserSuccess(data));
     } catch (error) {
+      showError("Failed to sign out");
       dispatch(signOutUserFailure(error.message));
     }
   };
 
   
 
-// return (
-//   <div className="min-h-screen bg-gradient-to-br from-[#050816] via-[#0b1120] to-[#020617] text-white flex">
-
-//     {/* Sidebar */}
-//     <div className="w-64 hidden lg:block">
-//       <StudentHeader />
-//     </div>
-
-//     {/* Main */}
-//     <div className="flex-1 flex items-center justify-center p-6">
-
-//       <div className="w-full max-w-xl bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 space-y-6">
-
-//         {/* TOP TAG */}
-//         <div className="flex justify-center">
-//           <span className="px-4 py-1 text-xs tracking-widest rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-//             • STUDENT ACCOUNT
-//           </span>
-//         </div>
-
-//         {/* TITLE */}
-//         <div className="text-center space-y-2">
-//           <h1 className="text-3xl profile-text sm:text-4xl font-light tracking-wide">
-//             My Profile
-//           </h1>
-//           <p className="text-xs tracking-[0.3em] text-gray-400">
-//             MANAGE YOUR IDENTITY
-//           </p>
-//         </div>
-
-//         {/* AVATAR */}
-//         <div className="flex justify-center">
-//           <div className="relative w-28 h-28">
-
-//             {uploading && (
-//               <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full text-xs">
-//                 Uploading...
-//               </div>
-//             )}
-
-//             <img
-//               onClick={() => fileref.current.click()}
-//               src={avatarPreview}
-//               alt="profile"
-//               className="w-28 h-28 rounded-full object-cover border-2 border-purple-400 cursor-pointer shadow-lg"
-//             />
-//           </div>
-//         </div>
-
-//         {/* FORM */}
-//         <form onSubmit={handleSubmit} className="space-y-4">
-
-//           <input type="file" ref={fileref} onChange={handleImageChange} hidden accept="image/*" />
-
-//           {/* USERNAME */}
-//           <div>
-//             <label className="text-xs text-gray-400 tracking-widest">
-//               USERNAME
-//             </label>
-//             <input
-//               type="text"
-//               defaultValue={currentUser.name}
-//               id="username"
-//               onChange={handleChange}
-//               className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-purple-400"
-//             />
-//           </div>
-
-//           {/* EMAIL */}
-//           <div>
-//             <label className="text-xs text-gray-400 tracking-widest">
-//               EMAIL
-//             </label>
-//             <input
-//               type="email"
-//               defaultValue={currentUser.email}
-//               id="email"
-//               onChange={handleChange}
-//               className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-purple-400"
-//             />
-//           </div>
-
-//           {/* PASSWORD */}
-//           <div>
-//             <label className="text-xs text-gray-400 tracking-widest">
-//               PASSWORD
-//             </label>
-//             <input
-//               type="password"
-//               id="password"
-//               onChange={handleChange}
-//               className="w-full mt-1 p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-purple-400"
-//             />
-//           </div>
-
-//           {/* BUTTON */}
-//           <button
-//             disabled={loading}
-//             className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 hover:opacity-90 transition font-medium tracking-widest"
-//           >
-//             {loading ? "UPDATING..." : "SAVE CHANGES"}
-//           </button>
-
-//         </form>
-
-//         {/* FOOTER */}
-//         <div className="flex justify-between text-sm pt-4 border-t border-white/10">
-
-//           <span
-//             onClick={handleDelete}
-//             className="text-red-400 cursor-pointer hover:underline"
-//           >
-//             🗑 DELETE ACCOUNT
-//           </span>
-
-//           <span
-//             onClick={handleSignout}
-//             className="text-gray-400 cursor-pointer hover:underline"
-//           >
-//             ⎋ SIGN OUT
-//           </span>
-
-//         </div>
-
-//       </div>
-
-//     </div>
-//   </div>
-// );
 
 return (
   <div className="min-h-screen bg-gradient-to-br from-[#050816] via-[#0b1120] to-[#020617] text-white flex flex-col lg:flex-row">
@@ -255,7 +141,7 @@ return (
 
         {/* TITLE */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl profile-text font-light tracking-wide">
+          <h1 className="text-2xl sm:text-3xl shimmer-text hero-title md:text-4xl profile-text font-light tracking-wide">
             My Profile
           </h1>
           <p className="text-[10px] sm:text-xs tracking-[0.3em] text-gray-400">
@@ -316,7 +202,7 @@ return (
           </div>
 
           {/* PASSWORD */}
-          <div>
+          {/* <div>
             <label className="text-[10px] sm:text-xs text-gray-400 tracking-widest">
               PASSWORD
             </label>
@@ -326,7 +212,29 @@ return (
               onChange={handleChange}
               className="w-full mt-1 p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-purple-400"
             />
-          </div>
+          </div> */}
+          <div className="relative w-full">
+  <input
+    type={showPassword ? "text" : "password"}   // 🔥 IMPORTANT FIX
+    placeholder="Password"
+    id="password"
+    onChange={handleChange}
+    className="w-full p-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white"
+  />
+
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+  >
+    {showPassword ? <FaEye /> : <FaEyeSlash />}
+  </button>
+</div>
+
+
+
+       
+      
 
           {/* BUTTON */}
           <button

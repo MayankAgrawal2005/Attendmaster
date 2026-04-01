@@ -1,115 +1,20 @@
-// import React, { useState } from 'react';
-// import {Link }from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
-// import { Header } from '../components/Header';
-// // import { OAuth } from '../components/OAuth';
-// export default function Signup() {
- 
-//   const [formData,setformData] = useState({});
-//    const [error,setError]= useState(null);
-//    const [loading,setloading]=useState(false);
- 
-//    const navigate = useNavigate();
-//   const handleChange=(e)=>{
-
-//      setformData(
-//       {
-//         ...formData ,
-//         [e.target.id]:e.target.value,
-//       }
-//      );
-
-     
-//   };
-
-//   const handleSubmit = async (e)=>{
-//      e.preventDefault();
-
-//      try{
-//       setloading(true);
-//      const res = await fetch('/api/auth/signup',{
-//       method:'POST',
-//       headers:{
-//         'Content-Type':'application/json',
-//       },
-//       body:JSON.stringify(formData),
-//      });
-
-//       // loading
-//      const data = await res.json();
-//      if(data.success===false){
-//       setloading(false);
-//       setError(data.message);
-    
-//       return;
-//      }
-
-// // loading
-//       setloading(false);
-//       setError(null);
-//      console.log(data);
-//      navigate('/sign-in');
-
-//      }
-//      catch(error){
-//       setloading(false);
-//       setError(error.message);
-//      }
-     
-
-//   };
-
-// console.log(formData);
-//   return (
-
- 
-  
-
-
-//     <div className=''>
-
-  
-//     <div className='p-3 max-w-lg  mx-auto'>
-
-//  <h1 className='text-3xl  text-center font-semibold my-7'>Sign up</h1>
-
-//    <form  onSubmit={handleSubmit} className='flex flex-col gap-4 '>
-//       <input type='text' placeholder='username ' 
-//       className='border p-3 rounded-lg' id='username' onChange={handleChange}/>
-//       <input type='email' placeholder='email ' 
-//       className='border p-3 rounded-lg' id='email' onChange={handleChange}/>
-//       <input type='password' placeholder='password ' 
-//       className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
-
-//       <button disabled={loading} className='bg-slate-700 text-white p-3 rounded-lg 
-//        uppercase hover:opacity-95 disabled:opacity-80'>
-//       {loading ? 'Loading...': 'Sign Up'}
-//        </button>
-//        {/* <OAuth/> */}
-
-//  </form>
-//  <div className='flex gap-2 mt-5'>
-//   <p>Have an account?</p>
-//   <Link to='/sign-in'>
-//     <span className='text-blue-700'>Sign in</span>
-//   </Link>
-//  </div>
-
-
-// {error && <p className='text-red-500 mt-5' >{error}</p>}
-//     </div>
-
-// </div>
-//   )
-// }
-
-
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-export default function Signup() {
-  const [formData, setformData] = useState({});
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { Header } from '../components/Header';
 
+import { showError,showSuccess } from '../styles/toast';
+
+
+export default function Signup() {
+
+  const [formData, setformData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+     const [error,setError]= useState(null);
+   const [loading,setloading]=useState(false);
+   const navigate = useNavigate();
   const handleChange = (e) => {
     setformData({
       ...formData,
@@ -117,8 +22,47 @@ export default function Signup() {
     });
   };
 
-  return (
-    <form className="flex flex-col gap-4">
+    const handleSubmit = async (e)=>{
+     e.preventDefault();
+
+     try{
+      setloading(true);
+     const res = await fetch('/api/auth/signup',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+      },
+      body:JSON.stringify(formData),
+     });
+
+      // loading
+     const data = await res.json();
+     if(data.success===false){
+      setloading(false);
+        showError(data.message);
+      setError(data.message);
+    
+      return;
+     }
+
+// loading
+      setloading(false);
+      showSuccess("Account created successfully");
+      setError(null);
+     console.log(data);
+     navigate('/sign-in');
+
+     }
+     catch(error){
+      setloading(false);
+      setError(error.message);
+     }
+     
+
+  };
+    
+ return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
       <input
         type="text"
@@ -136,13 +80,30 @@ export default function Signup() {
         className="p-3 rounded-xl bg-white/5 border border-white/10 text-white"
       />
 
-      <input
+      {/* <input
         type="password"
         placeholder="Password"
         id="password"
         onChange={handleChange}
         className="p-3 rounded-xl bg-white/5 border border-white/10 text-white"
-      />
+      /> */}
+      <div className="relative w-full">
+  <input
+    type={showPassword ? "text" : "password"}   // 🔥 IMPORTANT FIX
+    placeholder="Password"
+    id="password"
+    onChange={handleChange}
+    className="w-full p-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white"
+  />
+
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+  >
+    {showPassword ? <FaEye /> : <FaEyeSlash />}
+  </button>
+</div>
 
       <button className="py-3 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500">
         Sign Up
@@ -152,4 +113,10 @@ export default function Signup() {
   <Link to='/sign-in'>    <span className='text-blue-700'>Sign in</span>  </Link> </div>
     </form>
   );
-}
+
+     
+  };
+
+
+
+ 

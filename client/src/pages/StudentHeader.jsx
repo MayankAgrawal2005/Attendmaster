@@ -36,9 +36,9 @@ export const StudentHeader = () => {
         <div className="p-5 border-b border-gray-800">
           <Link to="/student-dashboard">
             <div className="flex items-center gap-2">
-              <FaCalendarDays className="text-green-400 text-xl" />
+              <FaCalendarDays className="text-violet-500 text-xl" />
               <h1 className="text-lg font-bold ml-1">
-                Attend<span className="text-green-400">Master</span>
+                Attend<span className="text-violet-400">Master</span>
               </h1>
             </div>
           </Link>

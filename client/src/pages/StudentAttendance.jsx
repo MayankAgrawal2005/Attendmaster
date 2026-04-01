@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { StudentHeader } from './StudentHeader';
 
+
 export const StudentAttendance = () => {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);

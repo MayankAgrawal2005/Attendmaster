@@ -1,95 +1,3 @@
-// import React from 'react'
-// import { Link } from 'react-router-dom'
-// import Lottie from 'lottie-react';
-// import { Header } from '../components/Header';
-// import { MdTableView } from "react-icons/md";
-
-// export const Home = () => {
-//   return (
-//     <div className='overflow-x-hidden w-full'>
-//       <Header className='' />
-
-//       {/* Hero Section */}
-//       <div className='w-full min-h-screen flex items-center justify-center px-4 mt-4'>
-//         <div className='max-w-4xl text-center space-y-4'>
-//           <h1 className='text-2xl sm:text-5xl text-white gradient-text mb-4'>
-//             Revolutionize Attendance Tracking
-//           </h1>
-//           <p className='text-md sm:text-xl'>"Effortless Attendance Tracking"</p>
-//           <div className='flex justify-center'>
-//             <Link to="/login">
-//               <button className='bg-yellow-400 px-6 py-3 text-black rounded-md'>
-//                 Get started
-//               </button>
-//             </Link>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Features Section */}
-//       <section id='features' className="px-4 py-10 border border-gray-300 shadow bg-white">
-//         <h1 className='text-center text-4xl font-mullish'>Key Features</h1>
-//         <div className='flex flex-col sm:flex-row flex-wrap justify-center items-center gap-10 mt-10'>
-
-//           {/* Card Template */}
-//           {["Excel Integration", "TimeTable Management", "Interactive Attendance"].map((title, i) => (
-//             <div key={i} className="relative w-full sm:w-[365px] h-[300px] bg-yellow-400 flex items-center justify-center">
-//               <div className="relative w-[90%] sm:w-[350px] h-[280px] bg-white border border-gray-300 hover:rotate-6 hover:scale-105 transition-all duration-300 shadow-lg p-4">
-//                 <div className="flex space-x-5 items-center">
-//                   {i === 1 && <MdTableView className='w-[60px] h-[80px] text-blue-500' />}
-//                   <Lottie style={{ width: "80px", height: "100px" }} />
-//                   <p className="text-2xl font-mullish text-black">{title}</p>
-//                 </div>
-//                 <p className="mt-4 text-[#6E727F] font-mullish text-sm">
-//                   {i === 0 && "Automatically update and access a single, comprehensive Excel sheet."}
-//                   {i === 1 && "Seamlessly integrate with existing timetables or create new ones. Effortlessly manage schedules."}
-//                   {i === 2 && "Mark attendance with just a click, using our intuitive interface."}
-//                 </p>
-//               </div>
-//             </div>
-//           ))}
-
-//         </div>
-//       </section>
-
-//       {/* About Section */}
-//       <section id='about' className='w-full px-4 py-10'>
-//         <div className='flex flex-col lg:flex-row gap-6 items-center'>
-//           <div className='w-full lg:w-1/2 h-[300px] border shadow-2xl border-gray-300 flex items-center justify-center'>
-//             <p className='hidden sm:inline'>3D Model placeholder</p>
-//           </div>
-//           <div className='w-full lg:w-1/2 h-auto border shadow-2xl border-gray-300 p-6'>
-//             <h2 className='text-xl sm:text-3xl font-mullish'>About AttendMaster</h2>
-//             <p className='text-[#6E727F] mt-4 font-mullish'>
-//               AttendMaster is designed to revolutionize attendance management in educational institutions. Our digital solution replaces traditional paper-based methods, offering a seamless, efficient and accurate way to track student attendance.
-//             </p>
-//             <p className='text-[#6E727F] mt-4 font-mullish'>
-//               With features like interactive marking, automated Excel updates, and timetable integration, AttendMaster simplifies the entire attendance process for teachers and administrators alike.
-//             </p>
-//           </div>
-//         </div>
-//       </section> 
-      
-            
-
-//       {/* Contact Section */}
-//       <section id='contact' className='w-full px-4 py-10 border border-gray-300 flex flex-col items-center'>
-//         <h1 className='text-center text-4xl font-bold font-mullish'>Get in Touch</h1>
-//         <p className='mt-4 text-center'>Ready to transform your attendance management? Contact us today!</p>
-//         <div className='mt-6'>
-//           <button className='bg-yellow-400 px-6 py-3 text-black rounded-md'>
-//             Contact us
-//           </button>
-//         </div>
-//       </section>
-
-//       {/* Footer */}
-//       <footer className='w-full h-[50px] border border-gray-300 flex items-center justify-center'>
-//         <p className='font-mullish text-center'>&copy; 2025 AttendMaster</p>
-//       </footer>
-//     </div>
-//   )
-// } 
 
 
 import React, { useEffect, useRef, useState } from 'react'
@@ -230,35 +138,6 @@ const FeatureCard = ({ icon, title, desc, items, color, delay }) => (
   </div>
 )
 
-/* ─────────────────────────────────────────────
-   HEADER
-───────────────────────────────────────────── */
-// const Header = () => {
-//   const [scrolled, setScrolled] = useState(false)
-//   useEffect(() => {
-//     const h = () => setScrolled(window.scrollY > 30)
-//     window.addEventListener('scroll', h)
-//     return () => window.removeEventListener('scroll', h)
-//   }, [])
-//   return (
-//     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-[#070b14]/80 backdrop-blur-xl border-b border-white/10 py-3' : 'py-5'}`}>
-//       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-//         <div className="flex items-center gap-2.5">
-//           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-sm font-black shadow-[0_0_20px_rgba(139,92,246,0.6)]">A</div>
-//           <span className="font-bold text-lg tracking-tight">Attend<span className="text-violet-400">Master</span></span>
-//         </div>
-//         <nav className="hidden md:flex gap-8 text-sm text-gray-400">
-//           {['Features', 'Why Us', 'Stats', 'Testimonials'].map(n => (
-//             <a key={n} href={`#${n.toLowerCase().replace(' ', '-')}`} className="hover:text-white transition-colors duration-200 hover:underline underline-offset-4 decoration-violet-500">{n}</a>
-//           ))}
-//         </nav>
-//         <Link to="/login">
-//           <MagButton primary className="text-sm px-6 py-3">Get Started →</MagButton>
-//         </Link>
-//       </div>
-//     </header>
-//   )
-// }
 
 /* ─────────────────────────────────────────────
    MAIN HOME
@@ -268,7 +147,7 @@ export const Home = () => {
     <div className="relative bg-[#070b14] text-white overflow-x-hidden font-['DM_Sans',sans-serif]">
 
       {/* Google Font import */}
-      <style>{`
+      {/* <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@700;800&display=swap');
 
         @keyframes fadeUp {
@@ -320,7 +199,7 @@ export const Home = () => {
         .spin-slow { animation: spinSlow 20s linear infinite; }
         .ticker-wrap { overflow: hidden; white-space: nowrap; }
         .ticker { display: inline-flex; animation: ticker 22s linear infinite; }
-      `}</style>
+      `}</style> */}
 
       <ParticleCanvas />
       <Header />
@@ -338,7 +217,7 @@ export const Home = () => {
         </div>
 
         {/* Headline */}
-        <h1 className="hero-title text-5xl sm:text-7xl lg:text-8xl leading-[1.05] max-w-5xl" style={{ animation: 'fadeUp 0.7s ease 0.1s both' }}>
+        <h1 className="hero-title text-3xl sm:text-7xl lg:text-8xl leading-[1.05] max-w-5xl" style={{ animation: 'fadeUp 0.7s ease 0.1s both' }}>
           Attendance
           <br />
           <span className="shimmer-text">Reimagined.</span>
@@ -391,7 +270,7 @@ export const Home = () => {
       <section id="features" className="relative px-6 py-28 max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <p className="text-violet-400 text-xs tracking-[0.3em] uppercase font-semibold mb-4" style={{ animation: 'fadeUp 0.6s ease both' }}>What We Offer</p>
-          <h2 className="hero-title text-5xl sm:text-6xl" style={{ animation: 'fadeUp 0.6s ease 0.1s both' }}>
+          <h2 className="hero-title text-3xl sm:text-7xl lg:text-8xl" style={{ animation: 'fadeUp 0.6s ease 0.1s both' }}>
             Built for Scale.<br /><span className="shimmer-text">Designed for Humans.</span>
           </h2>
           <p className="text-gray-500 mt-6 max-w-xl mx-auto" style={{ animation: 'fadeUp 0.6s ease 0.2s both' }}>
@@ -456,7 +335,7 @@ export const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-violet-400 text-xs tracking-[0.3em] uppercase font-semibold mb-4">Why AttendMaster</p>
-            <h2 className="hero-title text-5xl sm:text-6xl">The Smarter Choice<br /><span className="shimmer-text">for Modern Education.</span></h2>
+            <h2 className="hero-title text-3xl sm:text-7xl lg:text-8xl">The Smarter Choice<br /><span className="shimmer-text">for Modern Education.</span></h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -488,13 +367,13 @@ export const Home = () => {
 
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { value: '10000', suffix: '+', label: 'Students Managed', color: 'from-violet-500 to-purple-500' },
+              { value: '1000', suffix: '+', label: 'Students Managed', color: 'from-violet-500 to-purple-500' },
               { value: '500',   suffix: '+', label: 'Active Teachers',  color: 'from-cyan-500 to-blue-500' },
               { value: '50',    suffix: '+', label: 'Institutions',     color: 'from-amber-500 to-orange-500' },
               { value: '99',    suffix: '%', label: 'Accuracy Rate',    color: 'from-emerald-500 to-teal-500' },
             ].map((s, i) => (
               <div key={i} className="gradient-border rounded-2xl p-8 text-center group hover:-translate-y-1 transition-all duration-300">
-                <div className={`hero-title text-5xl bg-gradient-to-r ${s.color} bg-clip-text text-transparent mb-2`}>
+                <div className={`hero-title text-3xl bg-gradient-to-r ${s.color} bg-clip-text text-transparent mb-2`}>
                   <AnimatedCounter target={s.value} suffix={s.suffix} />
                 </div>
                 <p className="text-gray-500 text-sm tracking-wide mt-1">{s.label}</p>
@@ -509,7 +388,7 @@ export const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-violet-400 text-xs tracking-[0.3em] uppercase font-semibold mb-4">Testimonials</p>
-            <h2 className="hero-title text-5xl sm:text-6xl">Loved by <span className="shimmer-text">Educators.</span></h2>
+            <h2 className="hero-title text-4xl sm:text-6xl">Loved by <span className="shimmer-text">Educators.</span></h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -555,7 +434,7 @@ export const Home = () => {
 
         <div className="relative z-10 max-w-3xl mx-auto">
           <p className="text-violet-400 text-xs tracking-[0.3em] uppercase font-semibold mb-6">Get Started Today</p>
-          <h2 className="hero-title text-5xl sm:text-7xl mb-6">
+          <h2 className="hero-title text-3xl sm:text-7xl mb-6">
             Ready to<br /><span className="shimmer-text">Transform</span><br />Your Campus?
           </h2>
           <p className="text-gray-400 text-lg mb-10 leading-relaxed">
@@ -579,7 +458,7 @@ export const Home = () => {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-xs font-black">A</div>
             <span className="font-bold tracking-tight">Attend<span className="text-violet-400">Master</span></span>
           </div>
-          <p className="text-gray-600 text-xs">© 2025 AttendMaster. All rights reserved.</p>
+          <p className="text-gray-600 text-xs">© 2025 AttendMaster</p>
           <div className="flex gap-6 text-xs text-gray-600">
             {['Privacy', 'Terms', 'Contact', 'Blog'].map(l => (
               <a key={l} href="#" className="hover:text-gray-300 transition-colors">{l}</a>

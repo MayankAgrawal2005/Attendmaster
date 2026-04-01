@@ -193,7 +193,7 @@ return (
     </div>
 
     {/* MAIN */}
-    <div className="flex-1 mt-12 md:mt-0 p-4 sm:p-6 md:p-10 space-y-8 md:space-y-10  mt-14 lg:mt-0 lg:ml-64 ">
+    <div className="flex-1 mt-12 md:mt-0 p-4 sm:p-6 md:p-10 space-y-8 md:space-y-10   lg:mt-0 lg:ml-64 ">
 
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

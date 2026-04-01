@@ -1,11 +1,11 @@
 
-
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AdminHeader } from '../components/AdminHeader';
 import { MdCancel } from "react-icons/md";
 import { useSelector } from 'react-redux';
-
+import { addActivity } from './activity';
+import { showError,showSuccess } from '../styles/toast';
 export const ClassRoute = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -38,14 +38,17 @@ export const ClassRoute = () => {
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
+        showError(data.message);
         setError(data.message);
         return;
       }
-
+      showSuccess(`Class ${classData.name} created successfully`);
       setLoading(false);
       setError(null);
       setIsModalOpen(false);
       setRefresh(prev => !prev);
+
+     addActivity(`Class ${classData.name} created`);
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -59,6 +62,7 @@ export const ClassRoute = () => {
       const data = await res.json();
       setClasses(data);
     } catch (error) {
+      showError("Failed to load Classes");
       setError("Failed to load Classes");
     }
   };
@@ -143,7 +147,7 @@ return (
       )}
 
       {/* ERROR */}
-      {error && <p className="text-red-400 mb-6">{error}</p>}
+      {/* {error && <p className="text-red-400 mb-6">{error}</p>} */}
 
       {/* 🔥 UNIQUE LIST UI */}
       {classes.length === 0 ? (
@@ -199,10 +203,10 @@ return (
                     defaultValue=""
                     className="bg-white/5 border border-white/10 p-2 rounded-lg outline-none text-xs sm:text-sm"
                   >
-                    <option value="" disabled>Manage</option>
-                    <option value={`/add-student/${clas._id}`} className="text-black">Students</option>
-                    <option value={`/add-subject/${clas._id}`} className="text-black">Subjects</option>
-                    <option value={`/view-class/${clas._id}`} className="text-black">View</option>
+                    <option  className='bg-black text-white' value="" disabled>Manage</option>
+                    <option  value={`/add-student/${clas._id}`} className="text-white bg-black">Students</option>
+                    <option value={`/add-subject/${clas._id}`} className="text-white bg-black">Subjects</option>
+                    <option value={`/view-class/${clas._id}`} className="text-white bg-black">View</option>
                   </select>
 
                 </div>

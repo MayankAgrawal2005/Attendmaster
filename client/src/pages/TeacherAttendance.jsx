@@ -1,10 +1,9 @@
 
-
-
 import React, { useState, useEffect } from 'react';
 import { TeacherHeader } from './TeacherHeader';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { showError,showSuccess } from '../styles/toast';
 
 export const TeacherAttendance = () => {
   const navigate = useNavigate();
@@ -76,14 +75,14 @@ export const TeacherAttendance = () => {
       if (!res.ok) throw new Error(data.message || 'Failed to load students');
 
       setStudents(data.students || []);
-      setAttendanceRecords(
-        (data.students || []).map((stu) => ({
-          studentId: stu._id,
-          status: 'Absent',
-          name: stu.name,
-          enrollment: stu.enrollmentNumber,
-        }))
-      );
+      // setAttendanceRecords(
+      //   (data.students || []).map((stu) => ({
+      //     studentId: stu._id,
+      //     status: 'Absent',
+      //     name: stu.name,
+      //     enrollment: stu.enrollmentNumber,
+      //   }))
+      // );
     } catch (err) {
       setError(err.message);
     } finally {
@@ -134,11 +133,11 @@ export const TeacherAttendance = () => {
         body: JSON.stringify(payload),
       });
       const resultData = await res.json();
-      if (!res.ok) throw new Error(resultData.message || 'Failed to mark attendance');
+      if (!res.ok) throw new Error( resultData.message || 'Failed to mark attendance');
 
-      alert('Attendance marked successfully!');
+      showSuccess('Attendance marked successfully!');
     } catch (err) {
-      setError(err.message);
+      showError(err.message);
     } finally {
       setLoading(false);
     }
@@ -179,261 +178,54 @@ export const TeacherAttendance = () => {
     (rec) => rec.status === 'Present'
   ).length;
 
+
+useEffect(() => {
+  const fetchAttendance = async () => {
+    if (!selectedClass || !selectedSubject || !date || students.length === 0) return;
+
+    try {
+      const res = await fetch(
+        `/api/attendance/get-attendance?classId=${selectedClass}&subjectId=${selectedSubject}&teacherId=${currentUser._id}&date=${date}`
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        // fallback if error
+        setAttendanceRecords(
+          students.map((stu) => ({
+            studentId: stu._id,
+            status: 'Absent',
+            name: stu.name,
+            enrollment: stu.enrollmentNumber,
+          }))
+        );
+        return;
+      }
+
+      // 🔥 STEP 5 LOGIC HERE
+      if (data.dateRecord) {
+        setAttendanceRecords(data.dateRecord.records);
+      } else {
+        setAttendanceRecords(
+          students.map((stu) => ({
+            studentId: stu._id,
+            status: 'Absent',
+            name: stu.name,
+            enrollment: stu.enrollmentNumber,
+          }))
+        );
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchAttendance();
+}, [selectedClass, selectedSubject, date, students]);
   
-// return (
 
-  
-//   <div className="min-h-screen bg-gradient-to-br from-[#050816] via-[#0b1120] to-[#020617] text-white">
-  
-
-
-//     <TeacherHeader />
-
- 
-//     <div className="md:ml-64 p-6 space-y-6 ">
-  
-
-//    {/* Google Font import */}
-//       <style>{`
-//         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@700;800&display=swap');
-
-//         @keyframes fadeUp {
-//           from { opacity: 0; transform: translateY(36px); }
-//           to   { opacity: 1; transform: translateY(0); }
-//         }
-//         @keyframes floatOrb {
-//           0%, 100% { transform: translateY(0) scale(1); }
-//           50%       { transform: translateY(-28px) scale(1.06); }
-//         }
-//         @keyframes spinSlow {
-//           to { transform: rotate(360deg); }
-//         }
-//         @keyframes pulse-ring {
-//           0%   { transform: scale(0.8); opacity: 0.8; }
-//           100% { transform: scale(2.2); opacity: 0; }
-//         }
-//         @keyframes gradientShift {
-//           0%, 100% { background-position: 0% 50%; }
-//           50%       { background-position: 100% 50%; }
-//         }
-//         @keyframes shimmer {
-//           from { background-position: -200% center; }
-//           to   { background-position:  200% center; }
-//         }
-//         @keyframes ticker {
-//           from { transform: translateX(0); }
-//           to   { transform: translateX(-50%); }
-//         }
-
-//         .hero-title {
-//           font-family: 'Syne', sans-serif;
-//           font-weight: 800;
-//         }
-//         .shimmer-text {
-//           background: linear-gradient(90deg, #fff 0%, #a78bfa 40%, #e879f9 60%, #fff 100%);
-//           background-size: 200% auto;
-//           -webkit-background-clip: text;
-//           -webkit-text-fill-color: transparent;
-//           animation: shimmer 4s linear infinite;
-//         }
-//         .gradient-border {
-//           background: linear-gradient(#070b14, #070b14) padding-box,
-//                       linear-gradient(135deg, #7c3aed, #a855f7, #ec4899) border-box;
-//           border: 1px solid transparent;
-//         }
-//         .orb { animation: floatOrb 7s ease-in-out infinite; }
-//         .orb-2 { animation: floatOrb 9s ease-in-out infinite reverse; }
-//         .spin-slow { animation: spinSlow 20s linear infinite; }
-//         .ticker-wrap { overflow: hidden; white-space: nowrap; }
-//         .ticker { display: inline-flex; animation: ticker 22s linear infinite; }
-//       `}</style>
-
-//       {/* HEADER */}
-//       <div className="flex justify-between items-center">
-//         {/* <h1 className="text-3xl font-bold tracking-wide">
-//           Mark <span className="text-violet-400">Attendance</span>
-//         </h1> */}
-
-//         <h1 className="hero-title text-5xl sm:text-6xl lg:text-6xl leading-[1.05] max-w-5xl" style={{ animation: 'fadeUp 0.7s ease 0.1s both' }}>
-//           Mark 
-//           <br />
-//           <span className="shimmer-text">Attendance</span>
-//         </h1>
-//         <div className="text-sm text-gray-400 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
-//           {new Date().toDateString()}
-//         </div>
-//       </div>
-
-//       {/* SESSION SETUP */}
-//       <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-6">
-//         <h2 className="text-lg font-semibold mb-2 shimmer-text">Session Setup</h2>
-//         <p className="text-gray-400 text-sm mb-4">
-//           Select class, subject and date
-//         </p>
-
-//         <div className="grid md:grid-cols-3 gap-4">
-
-//           <select
-//             value={selectedClass}
-//             onChange={handleClassChange}
-//             className="p-3 rounded-xl bg-[#111827] border border-white/10"
-//           >
-//             <option value="">Choose Class</option>
-//             {classes.map((cls) => (
-//               <option key={cls._id} value={cls._id}>
-//                 {cls.name}
-//               </option>
-//             ))}
-//           </select>
-
-//           <select
-//             value={selectedSubject}
-//             onChange={(e) => setSelectedSubject(e.target.value)}
-//             className="p-3 rounded-xl bg-[#111827] border border-white/10"
-//           >
-//             <option value="">Choose Subject</option>
-//             {filteredSubjects.map((subj) => (
-//               <option key={subj._id} value={subj._id}>
-//                 {subj.name}
-//               </option>
-//             ))}
-//           </select>
-
-//           <input
-//             type="date"
-//             value={date}
-//             onChange={(e) => setDate(e.target.value)}
-//             className="p-3 rounded-xl bg-[#111827] border border-white/10"
-//           />
-
-//         </div>
-//       </div>
-
-//       {/* STUDENT STATS */}
-//       {students.length > 0 && (
-//         <>
-//           <div className="grid md:grid-cols-4 gap-4">
-
-//             <StatBox title="Total" value={students.length} />
-//             <StatBox title="Present" value={presentStudentsCount} color="text-green-400" />
-//             <StatBox title="Absent" value={students.length - presentStudentsCount} color="text-red-400" />
-//             <StatBox
-//               title="Attendance"
-//               value={`${Math.round((presentStudentsCount / students.length) * 100)}%`}
-//               color="text-yellow-400"
-//             />
-
-//           </div>
-
-//           {/* SEARCH */}
-//           <div className="flex gap-2">
-//             <input
-//               type="text"
-//               value={searchEnrollment}
-//               onChange={(e) => setSearchEnrollment(e.target.value)}
-//               placeholder="001, 002, 005"
-//               className="flex-1 p-3 rounded-xl bg-white/5 border border-white/10"
-//             />
-//             <button
-//               onClick={handleSearchEnrollment}
-//               className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
-//             >
-//               Search
-//             </button>
-//           </div>
-
-//           {/* ACTION BAR */}
-//           <div className="flex justify-end">
-//             <button
-//               onClick={handleSelectAll}
-//               className="px-4 py-2 rounded-xl bg-green-600/20 border border-green-500 text-green-400 hover:bg-green-600/30"
-//             >
-//               Mark All Present
-//             </button>
-//           </div>
-
-//           {/* TABLE */}
-//           <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-
-//             <table className="w-full text-sm">
-//               <thead className="bg-white/5 text-gray-400">
-//                 <tr>
-//                   <th className="p-4 text-left">#</th>
-//                   <th className="p-4 text-left">Student</th>
-//                   <th className="p-4 text-left">Enrollment</th>
-//                   <th className="p-4 text-left">Status</th>
-//                   <th className="p-4 text-left">Toggle</th>
-//                 </tr>
-//               </thead>
-
-//               <tbody>
-//                 {students.map((stu, index) => {
-//                   const record = attendanceRecords.find(
-//                     (r) => r.studentId === stu._id
-//                   );
-//                   const isPresent = record?.status === 'Present';
-
-//                   return (
-//                     <tr
-//                       key={stu._id}
-//                       className={`border-t border-white/5 transition
-//                       ${isPresent ? 'bg-green-500/5' : ''}`}
-//                     >
-//                       <td className="p-4">{index + 1}</td>
-//                       <td className="p-4 font-medium">{stu.name}</td>
-//                       <td className="p-4 text-gray-400">{stu.enrollmentNumber}</td>
-
-//                       <td className="p-4">
-//                         <span
-//                           className={`px-3 py-1 rounded-full text-xs
-//                           ${isPresent
-//                               ? 'bg-green-500/20 text-green-400'
-//                               : 'bg-red-500/20 text-red-400'
-//                             }`}
-//                         >
-//                           {isPresent ? 'Present' : 'Absent'}
-//                         </span>
-//                       </td>
-
-//                       <td className="p-4">
-//                         <div
-//                           onClick={() => handleToggleStatus(stu._id)}
-//                           className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition
-//                           ${isPresent ? 'bg-green-500' : 'bg-gray-600'}`}
-//                         >
-//                           <div
-//                             className={`w-5 h-5 bg-white rounded-full shadow-md transform transition
-//                             ${isPresent ? 'translate-x-6' : 'translate-x-1'}`}
-//                           />
-//                         </div>
-//                       </td>
-//                     </tr>
-//                   );
-//                 })}
-//               </tbody>
-//             </table>
-//           </div>
-
-//           {/* FOOTER */}
-//           <div className="flex justify-between items-center">
-
-//             <p className="text-sm text-gray-400">
-//               {presentStudentsCount} present out of {students.length}
-//             </p>
-
-//             <button
-//               onClick={handleSubmitAttendance}
-//               className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90"
-//             >
-//               Submit Attendance
-//             </button>
-
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   </div>
-// );
 
 
 return (
@@ -445,56 +237,7 @@ return (
     {/* Main */}
     <div className="flex-1 lg:ml-64 p-4 sm:p-6 md:p-8 space-y-6 mt-14 lg:mt-0">
 
-     <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@700;800&display=swap');       
-         @keyframes fadeUp {
-           from { opacity: 0; transform: translateY(36px); }
-         to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes floatOrb {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50%       { transform: translateY(-28px) scale(1.06); }         }
-        @keyframes spinSlow {
-          to { transform: rotate(360deg); }
-        }
-        @keyframes pulse-ring {
-          0%   { transform: scale(0.8); opacity: 0.8; }
-          100% { transform: scale(2.2); opacity: 0; }
-        }
-        @keyframes gradientShift {
-       0%, 100% { background-position: 0% 50%; }
-       50%       { background-position: 100% 50%; }
-     }
-     @keyframes shimmer {
-       from { background-position: -200% center; }
-       to   { background-position:  200% center; }
-     }
-     @keyframes ticker {
-       from { transform: translateX(0); }
-       to   { transform: translateX(-50%); }
-     }
-     .hero-title {
-       font-family: 'Syne', sans-serif;
-       font-weight: 800;
-     }
-     .shimmer-text {
-       background: linear-gradient(90deg, #fff 0%, #a78bfa 40%, #e879f9 60%, #fff 100%);
-          background-size: 200% auto;
-           -webkit-background-clip: text;
-         -webkit-text-fill-color: transparent;
-         animation: shimmer 4s linear infinite;
-       }
-        .gradient-border {
-          background: linear-gradient(#070b14, #070b14) padding-box,
-                      linear-gradient(135deg, #7c3aed, #a855f7, #ec4899) border-box;
-         border: 1px solid transparent;
-        }
-        .orb { animation: floatOrb 7s ease-in-out infinite; }
-        .orb-2 { animation: floatOrb 9s ease-in-out infinite reverse; }
-        .spin-slow { animation: spinSlow 20s linear infinite; }
-        .ticker-wrap { overflow: hidden; white-space: nowrap; }
-         .ticker { display: inline-flex; animation: ticker 22s linear infinite; }
-     `}</style>
+     
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 
@@ -574,14 +317,14 @@ return (
               type="text"
               value={searchEnrollment}
               onChange={(e) => setSearchEnrollment(e.target.value)}
-              placeholder="001, 002, 005"
+              placeholder="mark attendance by enrollment (e.g. 1, 26, 111)"
               className="flex-1 p-3 rounded-xl bg-white/5 border border-white/10"
             />
             <button
               onClick={handleSearchEnrollment}
               className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
             >
-              Search
+              Mark Attendance
             </button>
           </div>
 

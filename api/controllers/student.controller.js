@@ -20,9 +20,12 @@ const transporter = nodemailer.createTransport({
       auth:{
           user:process.env.EMAIL,
           pass:process.env.EMAIL_PASSWORD
-      }
+      },
+      
   });
   
+
+
 
 
 
@@ -160,12 +163,60 @@ export const addStudentToClass = async (req, res, next) => {
         existingClass.students.push(newStudent._id);
         await existingClass.save();
 
+        // await transporter.sendMail({
+        //     from: process.env.EMAIL,
+        //     to: email,
+        //     subject: 'Your Student Login Credentials',
+        //     text: `Your Login Code: ${newCode}, Password: ${password}`
+        // });
+
         await transporter.sendMail({
-            from: process.env.EMAIL,
-            to: email,
-            subject: 'Your Student Login Credentials',
-            text: `Your Login Code: ${newCode}, Password: ${password}`
-        });
+  from: process.env.EMAIL,
+  to: email,
+  subject: "Welcome to TrackIt 🎓",
+
+  html: `
+    <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
+      
+      <div style="max-width:500px; margin:auto; background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        
+        <!-- Header -->
+        <div style="background:linear-gradient(90deg,#6366f1,#8b5cf6); padding:20px; text-align:center; color:white;">
+          <h2 style="margin:0;">🎓 AttendMaster</h2>
+          <p style="margin:0;">Student Account Created</p>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:20px; color:#333;">
+          <h3>Hello ${name},</h3>
+          <p>You have been successfully added to your class.</p>
+
+          <div style="margin:20px 0; padding:15px; background:#f1f5f9; border-radius:8px;">
+            <p><strong>📌 Login Code:</strong> ${newCode}</p>
+            <p><strong>🔐 Password:</strong> ${password}</p>
+          </div>
+
+          <p style="color:#555;">Please keep your credentials safe.</p>
+
+          <!-- Button -->
+          <div style="text-align:center; margin-top:20px;">
+            <a href="https://attendmaster-a1vq.onrender.com/login" target="_blank"
+              style="display:inline-block; padding:10px 20px; background:#6366f1; color:white; text-decoration:none; border-radius:6px;">
+              Login Now
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="background:#f9fafb; padding:15px; text-align:center; font-size:12px; color:#888;">
+          © ${new Date().getFullYear()} AttendMaster
+        </div>
+
+      </div>
+
+    </div>
+  `,
+});
 
         res.status(201).json({ message: 'Student assigned to class & credentials sent via email' });
 
