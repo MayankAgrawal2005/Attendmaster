@@ -1,11 +1,12 @@
 
 
 import React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useDispatch,useSelector } from 'react-redux';
 import {signInStart,signInFailure,signInSuccess} from '../redux/user/userSlice'
 import { FaEye,FaEyeSlash } from "react-icons/fa";
+import { showError,showSuccess } from '../styles/toast';
 export const TeacherLogin = () => {
   const [formData,setformData] = useState({});
   const {loading,error}=useSelector((state)=>state.user);
@@ -50,6 +51,7 @@ export const TeacherLogin = () => {
     // setloading(false);
     // setError(data.message);
     // in this place redux is use
+     showError(data.message);
     dispatch(signInFailure(data.message));
     return;
    }
@@ -58,6 +60,7 @@ export const TeacherLogin = () => {
     // setloading(false);
     // setError(null);
     // yha bhi redux is use
+     showSuccess('Login successful');
     dispatch(signInSuccess(data));
    console.log(data);
    navigate('/teacher-dashboard');
@@ -67,11 +70,16 @@ export const TeacherLogin = () => {
     // setloading(false);
     // setError(error.message);
     // yha bhi redux use
+      showError(error.message);
     dispatch(signInFailure(error.message));
    }
    
  
  };
+
+  useEffect(() => {
+         dispatch(signInFailure(null));
+       }, []);
 
  console.log('formData is',formData);
 

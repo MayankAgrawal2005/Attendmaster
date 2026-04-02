@@ -27,6 +27,14 @@ export const TeacherRoute = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+if (!formData.email.endsWith('@gmail.com')) {
+    setError('Email must be a @gmail.com address');
+    showError('Email must be a @gmail.com address');
+    return; // 
+  }
+
     try {
       setLoading(true);
       const res = await fetch('/api/teacher/add-teacher', {

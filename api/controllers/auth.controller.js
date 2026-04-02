@@ -214,10 +214,10 @@ export const teachersignin = async(req,res,next)=>{
 
     try{
 
-        if(req.body.password){
-            req.body.password = bcryptjs.hashSync(req.body.password,10);
+        // if(req.body.password){
+        //     req.body.password = bcryptjs.hashSync(req.body.password,10);
 
-        }
+        // }
 
         const updatedUser = await Teacher.findByIdAndUpdate(req.params.id, {
 

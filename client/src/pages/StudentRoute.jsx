@@ -30,6 +30,12 @@ export const StudentRoute = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!studentData.email.endsWith('@gmail.com')) {
+    setError('Email must be a @gmail.com address');
+    showError('Email must be a @gmail.com address');
+    return; // ⛔ stop execution
+  }
     try {
       setLoading(true);
       const res = await fetch('/api/student/addandassignStudentToclass', {
