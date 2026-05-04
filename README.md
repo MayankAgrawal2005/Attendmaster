@@ -16,7 +16,7 @@ AttendMaster is a modern, full-stack Attendance Management System built with the
 - **Modern UI/UX**: Responsive and interactive interface built with Tailwind CSS and Framer Motion.
 - **Secure Authentication**: Robust authentication system using JWT and cookies.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Framework**: React.js (Vite)
@@ -53,7 +53,7 @@ AttendMaster is a modern, full-stack Attendance Management System built with the
 └── package.json        # Project dependencies and scripts
 ```
 
-## ⚙️ Installation & Setup
+##  Installation & Setup
 
 ### Prerequisites
 - Node.js (v16+)
